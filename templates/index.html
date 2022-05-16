@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+	<head>
+		<title>{{ title }}</title>
+		<link rel="stylesheet" href='../static/style.css'/>
+	</head>
+	<body>
+		<h1> Fan Status: {{ isFanOn }} </h1>
+		<h2> Pump Status: {{ isPumpOn }} </h2>
+		<h3> Percent Humidity: {{ humidityLevel }} </h3>
+		<br>
+		<h2> Commands </h2>
+		<h3> Fan Control ==> <a href="/fan/on" class="button">TURN ON</a>
+		<a href="/fan/off" class="button">TURN OFF</a>
+		</h3>
+		<h3> Pump Control ==> <a href="/pump/on" class="button">TURN ON</a>
+		<a href="/pump/off" class="button">TURN OFF</a>
+		</h3>
+	</body>
+</html>
+
