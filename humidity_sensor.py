@@ -76,16 +76,6 @@ def turn_off_pump():
 	pumpOn = False
 	print("Turning off pump")
 
-@celery.task()
-def loopFunction():
-	if currentHumidity < setHumidity:
-		turn_on_fan()
-		turn_on_pump()
-	else:
-		turn_off_fan()
-		turn_off_pump()
-
-
 
 if __name__ == '__main__':
 	try:
