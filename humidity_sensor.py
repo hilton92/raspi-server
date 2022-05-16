@@ -4,23 +4,11 @@
 
 import RPi.GPIO as GPIO
 from flask import Flask, render_template
-from celery import Celery
 import time
 import board
 import adafruit_ahtx0
 
 app = Flask(__name__)
-#app.config['CELERY_BROKER_URL'] = 'redis://localhost:6379/0'
-#app.config['CELERY_RESULT_BACKEND'] = 'redis://localhost:6379/0'
-
-#celery = Celery(app.name, broker=app.config['CELERY_BROKER_URL'])
-#celery.conf.update(app.config)
-
-celery = Celery(app.name, broker='redis://localhost:6379/0')
-
-@celeryApp.on_after_configure.connect
-def setup_periodic_tasks(sender, **kwargs):
-	sender.add_periodic_task(1.0, loop_function())
 
 
 fanRelayPin = 11 
