@@ -7,6 +7,7 @@ from flask import Flask, render_template
 import time
 import board
 import adafruit_ahtx0
+import csv
 
 app = Flask(__name__)
 
@@ -54,16 +55,25 @@ def action(deviceName, action):
 	return render_template('index.html', **templateData)
 
 def get_humidity():
-	return 55 #sensor.humidity
+	with open('data.txt', 'r') as file:
+	return file.readlines()[0]
 
 def get_temperature():
-	return 14 #sensor.temperature
+	with open('data.txt', 'r') as file:
+	return file.readlines()[1]
 
 def turn_on_fan():
-	GPIO.output(fanRelayPin, 0) #turn on fan by setting low
+	with open('data.txt', 'r') as file:
+	data = file.readlines()
+	data[2] = '1\n'	
+
+	with open('data.txt', 'w') as file:
+	file.writelines(data)	
+
 	fanOn = True
 	print("Turning on fan")
-def turn_on_pump():
+
+def turn_on_pump():	
 	GPIO.output(pumpRelayPin, 0)  #turn on pump by setting low
 	pumpOn = True
 	print("Turning on pump")
