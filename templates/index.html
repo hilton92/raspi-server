@@ -20,22 +20,18 @@
 		<div class="row"><div class="col-md-2">
       <a href="/" class="btn btn-block btn-lg btn-default" role="button">Refresh</a></div></div>
 		<h2> Fan and Pump Control </h2>
-		<h2> Fan
-		{% if isFanOn == "on" %}
-			is currently <strong>on</strong></h2><div class="row"><div class="col-md-2">
-			<a href="/fan/off" class="btn btn-block btn-lg btn-default" role="button">Turn off</a></div></div>
-		{% else %}
-			is currently <strong>off</strong></h2><div class="row"><div class="col-md-2">
-			<a href="/fan/on" class="btn btn-block btn-lg btn-primary" role="button">Turn on</a></div></div>
-		{% endif %}
-		<h2> Pump
-		{% if isPumpOn == "on" %}
-			is currently <strong>on</strong></h2><div class="row"><div class="col-md-2">
-			<a href="/pump/off" class="btn btn-block btn-lg btn-default" role="button">Turn off</a></div></div>
-		{% else %}
-			is currently <strong>off</strong></h2><div class="row"><div class="col-md-2">
-			<a href="/pump/on" class="btn btn-block btn-lg btn-primary" role="button">Turn on</a></div></div>
-		{% endif %}
+		<div class="row"><div class="col-md-2">
+		<a href="/fan/off" class="btn btn-block btn-lg btn-default" role="button">Turn fan off</a></div></div>
+		
+		<div class="row"><div class="col-md-2">
+		<a href="/fan/on" class="btn btn-block btn-lg btn-primary" role="button">Turn fan on</a></div></div>
+		<br>
+		<div class="row"><div class="col-md-2">
+		<a href="/pump/off" class="btn btn-block btn-lg btn-default" role="button">Turn pump off</a></div></div>
+		
+		<div class="row"><div class="col-md-2">
+		<a href="/pump/on" class="btn btn-block btn-lg btn-primary" role="button">Turn pump on</a></div></div>
+		
 	</body>
 </html>
 
