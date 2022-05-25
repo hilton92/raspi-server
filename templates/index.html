@@ -1,20 +1,41 @@
 <!DOCTYPE html>
-	<head>
-		<title>{{ title }}</title>
-		<link rel="stylesheet" href='../static/style.css'/>
-	</head>
+
+
+<head>
+   <title>RPi Web Server</title>
+   <!-- Latest compiled and minified CSS -->
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+   <!-- Optional theme -->
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+   <!-- Latest compiled and minified JavaScript -->
+   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+</head>
+
 	<body>
-		<h1> Fan Status: {{ isFanOn }} </h1>
-		<h2> Pump Status: {{ isPumpOn }} </h2>
-		<h3> Percent Humidity: {{ humidityLevel }} </h3>
+		<h2> Percent Humidity: {{ humidityLevel }} </h2>
+		<h2> Temperature: {{ temperature }}</h2>
+		<h2> Fan Status: {{ isFanOn }} </h2>
+		<h2> Pump Status: {{ isPumpOn }}</h2>
 		<br>
-		<h2> Commands </h2>
-		<h3> Fan Control ==> <a href="/fan/on" class="button">TURN ON</a>
-		<a href="/fan/off" class="button">TURN OFF</a>
-		</h3>
-		<h3> Pump Control ==> <a href="/pump/on" class="button">TURN ON</a>
-		<a href="/pump/off" class="button">TURN OFF</a>
-		</h3>
+		<div class="row"><div class="col-md-2">
+      <a href="/" class="btn btn-block btn-lg btn-default" role="button">Refresh</a></div></div>
+		<h2> Fan and Pump Control </h2>
+		<h2> Fan
+		{% if isFanOn == "on" %}
+			is currently <strong>on</strong></h2><div class="row"><div class="col-md-2">
+			<a href="/fan/off" class="btn btn-block btn-lg btn-default" role="button">Turn off</a></div></div>
+		{% else %}
+			is currently <strong>off</strong></h2><div class="row"><div class="col-md-2">
+			<a href="/fan/on" class="btn btn-block btn-lg btn-primary" role="button">Turn on</a></div></div>
+		{% endif %}
+		<h2> Pump
+		{% if isPumpOn == "on" %}
+			is currently <strong>on</strong></h2><div class="row"><div class="col-md-2">
+			<a href="/pump/off" class="btn btn-block btn-lg btn-default" role="button">Turn off</a></div></div>
+		{% else %}
+			is currently <strong>off</strong></h2><div class="row"><div class="col-md-2">
+			<a href="/pump/on" class="btn btn-block btn-lg btn-primary" role="button">Turn on</a></div></div>
+		{% endif %}
 	</body>
 </html>
 
