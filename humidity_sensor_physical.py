@@ -15,23 +15,23 @@ pumpRelayPin = 13
 setHumidity = 45
 overrideStartTime = 0
 
-#i2c = board.I2C()
-#sensor = adafruit_ahtx0.AHTx0(i2c)
+i2c = board.I2C()
+sensor = adafruit_ahtx0.AHTx0(i2c)
 
 GPIO.setup(fanRelayPin, GPIO.OUT)
 GPIO.setup(pumpRelayPin, GPIO.OUT)
 
 
 def measure_humidity():
-	return 45
+	return sensor.relative_humidity
 	
 def measure_temperature():
-	return 77
+	return (sensor.temperature * 9/5) + 32
 
 def report_humidity(thisHumidity):
 	with open('data.txt', 'r') as file:
 		data = file.readlines()
-		data[0] = str(thisHumidity)	
+		data[0] = str(int(thisHumidity)) + "\n"	
 
 	with open('data.txt', 'w') as file:
 		file.writelines(data)
@@ -39,7 +39,7 @@ def report_humidity(thisHumidity):
 def report_temperature(thisTemperature):
 	with open('data.txt', 'r') as file:
 		data = file.readlines()
-		data[1] = str(thisTemperature)	
+		data[1] = str(int(thisTemperature)) + "\n"	
 
 	with open('data.txt', 'w') as file:
 		file.writelines(data)
@@ -114,13 +114,13 @@ if __name__ == '__main__':
 			if (get_override_status == "1"):
 				if (override_time_elapsed()):
 					set_override_status("0")
-				else:
 					
 			else:
 				if measure_humidity() < setHumidity:
 					turn_on_fan()
 			time.sleep(5) #sleep for 5 seconds
-					
+			report_humidity(measure_humidity())
+			report_temperature(measure_temperature())		
 			
 	finally:
 		GPIO.cleanup()
