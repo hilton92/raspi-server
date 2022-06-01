@@ -5,9 +5,14 @@
 
 import RPi.GPIO as GPIO
 import time
+from datetime import date
+from datetime import datetime
+from csv import writer
 import board
 import adafruit_ahtx0
 
+today = date.today()
+todaysDate = today.strftime("%b-%d-%Y")
 
 fanRelayPin = 11 
 pumpRelayPin = 13 
@@ -26,7 +31,7 @@ def measure_humidity():
 	return sensor.relative_humidity
 	
 def measure_temperature():
-	return (sensor.temperature * 9/5) + 32
+	return (sensor.temperature * 9/5) + 32 #convert C to F
 
 def report_humidity(thisHumidity):
 	with open('data.txt', 'r') as file:
@@ -81,7 +86,7 @@ def set_pump_status(thisString):
 		file.writelines(data)
 		
 def turn_on_fan():
-	GPIO.output(fanRelayPin, 0)
+	GPIO.output(fanRelayPin, 0) # turn on fan by setting low
 	set_fan_status("on")
 
 def turn_on_pump():	
@@ -111,16 +116,24 @@ def override_time_elapsed():
 if __name__ == '__main__':
 	try:
 		while True:
-			if (get_override_status == "1"):
-				if (override_time_elapsed()):
-					set_override_status("0")
+			for i in range(6):	
+				if (get_override_status == "1"):
+					if (override_time_elapsed()):
+						set_override_status("0")
 					
-			else:
-				if measure_humidity() < setHumidity:
-					turn_on_fan()
-			time.sleep(5) #sleep for 5 seconds
-			report_humidity(measure_humidity())
-			report_temperature(measure_temperature())		
-			
+				else:
+					if measure_humidity() < setHumidity:
+						turn_on_fan()
+				time.sleep(5) #sleep for 5 seconds
+				report_humidity(measure_humidity())
+				report_temperature(measure_temperature())
+			#write to file
+			now = datetime.now()
+			currentTime = now.strftime("%H-%M-%S")
+			writeData = [currentTime, int(measure_humidity()), int(measure_temperature())]	
+			with open(todaysDate + '.csv', 'a', newline='') as fileObject:
+				writerObject = writer(fileObject)
+				writerObject.writerow(writeData)
+				fileObject.close()
 	finally:
 		GPIO.cleanup()
