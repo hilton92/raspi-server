@@ -18,7 +18,7 @@ todaysDate = today.strftime("%b-%d-%Y")
 fanRelayPin = 11 
 pumpRelayPin = 13 
 
-setHumidity = 45 # desired humidity of room
+setHumidity = 65 # desired humidity of room
 
 #timer variables - when fan or pump status is overridden, it remains overridden for 30 minutes
 #when the ideal humidity is reached, pump turns off but fan stays on for 10 minutes
@@ -72,8 +72,7 @@ def get_pump_status():
 #read shared text file to get override status		
 def get_override_status():
 	with open('data.txt', 'r') as file:
-		return file.readlines()[4]
-
+		return str(file.readlines()[4])
 
 def set_override_status(indicator):
 	with open('data.txt', 'r') as file:
@@ -116,11 +115,12 @@ def turn_off_pump():
 	set_pump_status("off\n")
 	
 def override_time_elapsed():
+	global overrideStartTime
 	if overrideStartTime == 0:
 		#hasn't been started yet
 		overrideStartTime = time.time()
-		return false
-	elif (overrideStartTime - time.time()) > 1800:
+		return False
+	elif (time.time() - overrideStartTime) > 20:
 		overrideStartTime = 0
 		return True
 	else:
@@ -134,20 +134,25 @@ def start_fan_timer():
 
 def fan_time_elapsed():
 	global fanOnStartTime
-	if (fanOnStartTime - time.time()) > 600:
+	if (time.time() - fanOnStartTime) > 30:
 		fanOnStartTime = 0
 		return True
 	else:
 		return False
 
+def reset_shared_file():
+	data = ["20\n", "20\n", "off\n", "off\n", "no"]
+	with open('data.txt', 'w') as file:
+		file.writelines(data)
 
 if __name__ == '__main__':
 	try:
+		reset_shared_file()
 		while True:
 			for i in range(6):	
-				if (get_override_status() == "1"):
+				if (get_override_status() == "yes"):
 					if (override_time_elapsed()):
-						set_override_status("0")
+						set_override_status("no")
 					if get_fan_status() == "on":
 						turn_on_fan()
 					elif get_fan_status() == "off":
@@ -163,8 +168,8 @@ if __name__ == '__main__':
 					if measure_humidity() > setHumidity:
 						turn_off_pump()	
 						start_fan_timer()
-					if fan_time_elapsed():
-						turn_off_fan()
+						if fan_time_elapsed():
+							turn_off_fan()
 						
 				time.sleep(5) #sleep for 5 seconds
 				report_humidity(measure_humidity())

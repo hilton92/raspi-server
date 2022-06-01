@@ -14,7 +14,6 @@ def index():
 	thisFanStatus = get_fan_status()
 	thisPumpStatus = get_pump_status()
 	thisOverride = get_override_status()
-	print("main loop:")
 	templateData = {
 		'title' : 'Humidity Sensor', 
 		'isFanOn' : thisFanStatus,
@@ -53,7 +52,8 @@ def action(deviceName, action):
 		'isFanOn' : thisFanStatus,
 		'isPumpOn' : thisPumpStatus,
 		'humidityLevel' : thisHumidity,
-		'temperature' : thisTemperature}
+		'temperature' : thisTemperature,
+		'overridden' : thisOverride}
 	return render_template('index.html', **templateData)
 
 def get_humidity():
@@ -116,7 +116,7 @@ def set_override():
 	overRide = True
 	with open('data.txt', 'r') as file:
 		data = file.readlines()
-		data[4] = '1\n'	
+		data[4] = 'yes'	
 
 	with open('data.txt', 'w') as file:
 		file.writelines(data)
