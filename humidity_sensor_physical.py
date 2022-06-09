@@ -101,18 +101,22 @@ def set_pump_status(thisString):
 def turn_on_fan():
 	GPIO.output(fanRelayPin, 0) # turn on fan by setting low
 	set_fan_status("on\n")
+	print("Turning on fan")
 
 def turn_on_pump():	
 	GPIO.output(pumpRelayPin, 0)  #turn on pump by setting low
 	set_pump_status("on\n")
+	print("Turning on pump")
 	
 def turn_off_fan():
 	GPIO.output(fanRelayPin, 1) #turn off fan by setting high
 	set_fan_status("off\n")
+	print("Turning off fan")
 	
 def turn_off_pump():
 	GPIO.output(pumpRelayPin, 1) #turn off pump by setting high
 	set_pump_status("off\n")
+	print("Turning off pump")
 	
 def override_time_elapsed():
 	global overrideStartTime
@@ -153,13 +157,13 @@ if __name__ == '__main__':
 				if (get_override_status() == "yes"):
 					if (override_time_elapsed()):
 						set_override_status("no")
-					if get_fan_status() == "on":
+					if get_fan_status() == "on\n":
 						turn_on_fan()
-					elif get_fan_status() == "off":
+					if get_fan_status() == "off\n":
 						turn_off_fan()
-					elif get_pump_status() == "on":
+					if get_pump_status() == "on\n":
 						turn_on_pump()
-					elif get_pump_status() == "off":
+					if get_pump_status() == "off\n":
 						turn_off_pump()	
 				else:
 					if measure_humidity() < setHumidity - 5:
@@ -179,7 +183,7 @@ if __name__ == '__main__':
 			now = datetime.now()
 			currentTime = now.strftime("%H-%M-%S")
 			writeData = [currentTime, int(measure_humidity()), int(measure_temperature())]	
-			with open(todaysDate + '.csv', 'a', newline='') as fileObject:
+			with open('/home/ras-pi-user/humidifier_data/' + todaysDate + '.csv', 'a', newline='') as fileObject:
 				writerObject = writer(fileObject)
 				writerObject.writerow(writeData)
 				fileObject.close()
