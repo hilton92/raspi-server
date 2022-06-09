@@ -18,7 +18,7 @@ todaysDate = today.strftime("%b-%d-%Y")
 fanRelayPin = 11 
 pumpRelayPin = 13 
 
-setHumidity = 65 # desired humidity of room
+setHumidity = 45 # desired humidity of room
 
 #timer variables - when fan or pump status is overridden, it remains overridden for 30 minutes
 #when the ideal humidity is reached, pump turns off but fan stays on for 10 minutes
