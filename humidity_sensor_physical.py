@@ -120,7 +120,7 @@ def override_time_elapsed():
 		#hasn't been started yet
 		overrideStartTime = time.time()
 		return False
-	elif (time.time() - overrideStartTime) > 20:
+	elif (time.time() - overrideStartTime) > 1800:
 		overrideStartTime = 0
 		return True
 	else:
@@ -134,7 +134,7 @@ def start_fan_timer():
 
 def fan_time_elapsed():
 	global fanOnStartTime
-	if (time.time() - fanOnStartTime) > 30:
+	if (time.time() - fanOnStartTime) > 600:
 		fanOnStartTime = 0
 		return True
 	else:
