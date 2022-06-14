@@ -170,14 +170,20 @@ if __name__ == '__main__':
 					if thisHumidity < setHumidity - 5:
 						turn_on_fan()
 						turn_on_pump()
-					if thisHumidity > setHumidity:
+					elif thisHumidity > setHumidity:
 						turn_off_pump()	
 						if fanOnStartTime == 0:
 							#hasn't been started yet
 							fanOnStartTime = time.time() #start now
 						if (time.time() - fanOnStartTime) > 600 and fanOnStartTime != 0:
 							fanOnStartTime = 0
-							turn_off_fan()	
+							turn_off_fan()
+					else:
+						if (time.time() - fanOnStartTime) > 600 and fanOnStartTime != 0:
+							fanOnStartTime = 0
+							turn_off_fan()
+							
+							
 				time.sleep(5) #sleep for 5 seconds
 				report_humidity(thisHumidity)
 				report_temperature(measure_temperature())
