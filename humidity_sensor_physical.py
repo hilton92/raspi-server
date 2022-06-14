@@ -153,6 +153,7 @@ if __name__ == '__main__':
 	try:
 		reset_shared_file()
 		while True:
+			thisHumidity = measure_humidity()
 			for i in range(6):	
 				if (get_override_status() == "yes"):
 					if (override_time_elapsed()):
@@ -166,17 +167,19 @@ if __name__ == '__main__':
 					if get_pump_status() == "off\n":
 						turn_off_pump()	
 				else:
-					if measure_humidity() < setHumidity - 5:
+					if thisHumidity < setHumidity - 5:
 						turn_on_fan()
 						turn_on_pump()
-					if measure_humidity() > setHumidity:
+					if thisHumidity > setHumidity:
 						turn_off_pump()	
-						start_fan_timer()
-						if fan_time_elapsed():
-							turn_off_fan()
-						
+						if fanOnStartTime == 0:
+							#hasn't been started yet
+							fanOnStartTime = time.time() #start now
+						if (time.time() - fanOnStartTime) > 600 and fanOnStartTime != 0:
+							fanOnStartTime = 0
+							turn_off_fan()	
 				time.sleep(5) #sleep for 5 seconds
-				report_humidity(measure_humidity())
+				report_humidity(thisHumidity)
 				report_temperature(measure_temperature())
 				
 			#write to file (once every 30 seconds)
