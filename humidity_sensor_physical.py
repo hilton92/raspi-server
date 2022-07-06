@@ -178,11 +178,13 @@ if __name__ == '__main__':
 						if (time.time() - fanOnStartTime) > 600 and fanOnStartTime != 0:
 							fanOnStartTime = 0
 							turn_off_fan()
+							turn_off_pump()
 					else:
 						if (time.time() - fanOnStartTime) > 600 and fanOnStartTime != 0:
 							fanOnStartTime = 0
 							print("resetting")
 							turn_off_fan()
+							turn_off_pump()
 
 				time.sleep(5) #sleep for 5 seconds
 				report_humidity(thisHumidity)
