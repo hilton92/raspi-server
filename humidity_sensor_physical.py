@@ -152,6 +152,8 @@ def reset_shared_file():
 if __name__ == '__main__':
 	try:
 		reset_shared_file()
+		turn_off_fan()
+		turn_off_pump()
 		while True:
 			for i in range(6):
 				thisHumidity = measure_humidity()
@@ -170,6 +172,7 @@ if __name__ == '__main__':
 					if thisHumidity < setHumidity - 5:
 						turn_on_fan()
 						turn_on_pump()
+						fanOnStartTime = 0
 					elif thisHumidity > setHumidity:
 						turn_off_pump()
 						if fanOnStartTime == 0:
